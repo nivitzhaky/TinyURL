@@ -10,12 +10,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Random;
 
-/**
- * Spring Boot Hello案例
- * <p>
- * Created by bysocket on 26/09/2017.
- */
-
 @RestController
 @RequestMapping(value = "")
 public class AppController {
@@ -33,7 +27,7 @@ public class AppController {
         return "Hello";
     }
 
-    @RequestMapping(value = "/{tiny}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{tiny}/", method = RequestMethod.GET)
     public ModelAndView redirect(@PathVariable String tiny) {
         String redirectTo = repository.get(tiny).toString();
         System.out.println(redirectTo);
@@ -50,7 +44,7 @@ public class AppController {
         String longUrl = getValidLongUrl(request);
         for (int i = 0; i < MAX_RETIES; i++) {
             String candidate = generateTinyUrl();
-            if (repository.set(candidate, longUrl)) return baseurl + candidate;
+            if (repository.set(candidate, longUrl)) return baseurl + candidate + "/";
         }
         return "Error";
     }
