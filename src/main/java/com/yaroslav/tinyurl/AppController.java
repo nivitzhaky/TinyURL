@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 
@@ -36,12 +37,12 @@ public class AppController {
     public String sayHello() {
         return "Hello";
     }
+
     @RequestMapping(value = "/app/user", method = RequestMethod.POST)
     public String createUser(@RequestBody User user) {
         mongoTemplate.insert(user,"users");;
         return "OK";
     }
-
     @RequestMapping(value = "/{tiny}/", method = RequestMethod.GET)
     public ModelAndView redirect(@PathVariable String tiny) {
         String redirectTo = repository.get(tiny).toString();
@@ -55,12 +56,7 @@ public class AppController {
         System.out.println(redirectTo);
         return new ModelAndView("redirect:" + redirectTo);
     }
-
-    @RequestMapping(value = "/app/tiny/{tiny}", method = RequestMethod.GET)
-    public String getLongover(@PathVariable String tiny) {
-        return repository.get(tiny).toString();
-    }
-
+    
     @RequestMapping(value = "/app/tiny", method = RequestMethod.POST)
     public String generateUrl(@RequestBody NewTinyRequest request) {
         String longUrl = getValidLongUrl(request);
